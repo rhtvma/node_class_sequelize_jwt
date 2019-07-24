@@ -1,9 +1,9 @@
 const uuidv4 = require('uuid/v4'),
     uuidv5 = require('uuid/v5'),
-    conf = require('../config');
-
+    config = require('config');
 class UtilityService {
     constructor() {
+        this.conf = config.get('configuration');
     }
 }
 

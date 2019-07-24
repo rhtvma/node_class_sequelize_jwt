@@ -16,19 +16,20 @@ class TestServer {
         this.mysqlconf = config.get('mysql');
         this.testServer = express();
         /*Load public*/
-        this.testServer.use(express.static(__dirname + '/../public/dist'));
+        // this.testServer.use(express.static(__dirname + '/../public/dist'));
 
         /*Logger*/
         this._initiateLogging();
 
         /*Session*/
-        this._setSessionMiddleware();
+        // this._setSessionMiddleware();
 
         /*Express middleware, helmet, cors etc.*/
         this._setMiddleware();
 
         /*Sequelize Databse Synce*/
         this._syncSequelizeDatabase();
+
         /**Routes*/
         /* Common of All routes. */
         this.testServer.use('*', (req, res, next) => {
@@ -97,6 +98,7 @@ class TestServer {
             .use(cors());
 
         this.testServer.use('/public', express.static('./public'));
+        this.testServer.use('/images', express.static('./public/serve/images'));
     }
 
     _setErrorHandler() {

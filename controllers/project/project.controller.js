@@ -61,8 +61,8 @@ class ProjectController {
 
     usersList(req, res, next) {
         try {
-            return Users
-                .all().then((result) => {
+            return Users.all()
+                .then((result) => {
                     logg.info('completed successfully.');
                     if (result.length > 0) {
                         res.status(200).json({
