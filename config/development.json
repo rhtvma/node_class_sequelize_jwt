@@ -1,0 +1,42 @@
+{
+    "mysql": {
+        "username": "root",
+        "password": "root",
+        "database": "node_crud",
+        "host": "192.168.1.75",
+        "dialect": "mysql",
+        "define": {
+            "timestamps": false
+        }
+    },
+    "constants": {
+        "port": 3000
+    },
+    "configuration": {
+        "host": "http://localhost",
+        "port": 3000,
+        "securePort": 443,
+        "httpHeaders": {
+            "names": {
+                "contentType": "Content-Type"
+            },
+            "values": {
+                "appJson": "application/json"
+            }
+        },
+        "serverBase": "http://localhost",
+        "sslBase": "http://localhost:8082",
+        "session": {
+            "secret": "@49a12g!"
+        }
+    },
+    "routes": {
+        "project": {
+            "projectList": "/projectList",
+            "projectCreate": "/projectCreate"
+        },
+        "users": {
+            "usersList": "/usersList"
+        }
+    }
+}

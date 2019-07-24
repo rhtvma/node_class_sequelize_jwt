@@ -1,0 +1,61 @@
+{
+    "name": "TestServer",
+    "version": "0.0.1",
+    "description": "TestServer.",
+    "main": "main.js",
+    "scripts": {
+        "predev": ""
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rhtvma"
+    },
+    "keywords": [
+        "node",
+        "server"
+    ],
+    "author": "Rohit VErma",
+    "license": "ISC",
+    "homepage": "https://github.com/rhtvma",
+    "dependencies": {
+        "@google/maps": "0.5.5",
+        "async": "2.6.1",
+        "body-parser": "1.18.3",
+        "bunyan": "1.8.12",
+        "config": "^3.2.2",
+        "cors": "2.8.4",
+        "cron": "1.3.0",
+        "express": "4.16.3",
+        "express-limiter": "1.6.1",
+        "express-mysql-session": "2.0.1",
+        "express-session": "1.15.6",
+        "fs-extra": "7.0.0",
+        "jsonwebtoken": "8.3.0",
+        "jwt-simple": "^0.5.5",
+        "method-override": "3.0.0",
+        "multer": "1.4.1",
+        "mysql": "^2.16.0",
+        "mysql2": "^1.6.4",
+        "node-uuid": "1.4.8",
+        "nodemailer": "4.6.7",
+        "passport-jwt": "4.0.0",
+        "pg": "^7.8.0",
+        "pg-hstore": "^2.3.2",
+        "redis": "2.8.0",
+        "sequelize": "^4.42.0",
+        "sequelize-auto": "^0.4.29",
+        "sequelize-auto-migrations": "^1.0.3",
+        "supertest-session": "3.3.0",
+        "tedious": "^4.1.3",
+        "telesignsdk": "2.2.0",
+        "uuid": "3.3.2"
+    },
+    "devDependencies": {
+        "chai": "4.1.2",
+        "eslint": "5.2.0",
+        "mocha": "5.2.0",
+        "request": "2.87.0",
+        "should": "13.2.3",
+        "supertest": "3.1.0"
+    }
+}
