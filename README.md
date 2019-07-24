@@ -5,7 +5,7 @@
     Class
     Sequelize
     MySQL
-    JWT
+    JWT [Yet to implement]
 
 ### Public Access :  
     Images : http://localhost:3000/images/dummy-profile.jpg
