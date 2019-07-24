@@ -1,0 +1,1 @@
+# node_class_sequelize_jwt
