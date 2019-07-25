@@ -1,10 +1,12 @@
 const express = require('express'),
-    Project = require('./controllers/project');
+    Project = require('./controllers/project'),
+    Auth = require('./controllers/auth');
 
 class AppRouter {
     constructor() {
         this._router = express.Router();
         this._projectModule = new Project.ProjectRouter();
+        this._authModule = new Auth.AuthRouter();
 
         /*Always should be the last middleware for default route handler*/
         this._router.all('/', (req, res, next) => {
@@ -19,8 +21,8 @@ class AppRouter {
     get subRoutes() {
         return {
             globalRoute: this._router,
-            projectRoutes: this._projectModule.router,
-            resourceRoutes: []
+            authRoute: this._authModule.router,
+            secureRoutes: [this._projectModule.router]
         };
     }
 }

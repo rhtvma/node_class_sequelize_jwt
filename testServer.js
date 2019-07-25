@@ -1,6 +1,4 @@
 const express = require('express'),
-    session = require('express-session'),
-    mySqlSessionStore = (require('express-mysql-session'))(session),
     methodOverride = require('method-override'),
     bodyParser = require('body-parser'),
     cors = require('cors'),
@@ -42,7 +40,9 @@ class TestServer {
         this.testServer.use('/', [
             this.appRouter.subRoutes.globalRoute
         ]);
-        this.testServer.use('/', this.appRouter.subRoutes.projectRoutes);
+        this.testServer.use('/auth', this.appRouter.subRoutes.authRoute);
+        /* Secure Routes */
+        this.testServer.use('/api', this.appRouter.subRoutes.secureRoutes);
         /******/
 
         /*Error Handler middleware*/
@@ -67,20 +67,20 @@ class TestServer {
         /**
          * Session middleware
          */
-        const sessionStore = new mySqlSessionStore(this.conf.mysqlconf);
+        // const sessionStore = new mySqlSessionStore(this.conf.mysqlconf);
 
         this.testServer.set('trust proxy', 1);
-        this.testServer.use(session({
-            // key: '',
-            secret: this.conf.session.secret,
-            store: sessionStore,
-            resave: false,
-            saveUninitialized: false,
-            clearExpired: true,
-            checkExpirationInterval: 72000000, // ms
-            expiration: 86400000,
-            name: 'eliteSession'
-        }));
+        // this.testServer.use(session({
+        //     // key: '',
+        //     secret: this.conf.session.secret,
+        //     store: sessionStore,
+        //     resave: false,
+        //     saveUninitialized: false,
+        //     clearExpired: true,
+        //     checkExpirationInterval: 72000000, // ms
+        //     expiration: 86400000,
+        //     name: 'eliteSession'
+        // }));
 
     }
 

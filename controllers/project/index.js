@@ -3,10 +3,25 @@ const express = require('express'),
 
 const config = require('config');
 
+/**
+ * @swagger
+ * definitions:
+ *   Puppy:
+ *     properties:
+ *       name:
+ *         type: string
+ *       breed:
+ *         type: string
+ *       age:
+ *         type: integer
+ *       sex:
+ *         type: string
+ */
+
 
 class ProjectRouter {
     constructor() {
-        this.routes = config.get('routes');
+        this.routes = config.get('configuration.routes');
         this._projectController = new ProjectController();
 
         this.router = express.Router();

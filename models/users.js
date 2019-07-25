@@ -1,7 +1,7 @@
 /* jshint indent: 1 */
 
 module.exports = function (sequelize, DataTypes) {
-    return sequelize.define('users', {
+    const users = sequelize.define('users', {
         id: {
             type: DataTypes.INTEGER(11),
             allowNull: true,
@@ -9,19 +9,38 @@ module.exports = function (sequelize, DataTypes) {
             autoIncrement: true
         },
         firstName: {
-            type: DataTypes.STRING(20),
+            type: DataTypes.STRING(100),
             allowNull: true
         },
         lastName: {
-            type: DataTypes.STRING(20),
+            type: DataTypes.STRING(100),
             allowNull: true
+        },
+        username: {
+            type: DataTypes.STRING(100),
+            allowNull: true
+        },
+        password: {
+            type: DataTypes.STRING(200),
+            allowNull: false
         },
         age: {
             type: DataTypes.INTEGER(11),
             allowNull: true
         },
+        role: {
+            type: DataTypes.STRING(20),
+            defaultValue: 'user',
+            allowNull: true
+        },
+        active: {
+            allowNull: false,
+            defaultValue: 1,
+            type: DataTypes.BOOLEAN
+        },
         imageURL: {
             type: DataTypes.TEXT,
+            defaultValue: "/images/dummy-profile.jpg",
             allowNull: true
         },
         createdAt: {
@@ -37,4 +56,9 @@ module.exports = function (sequelize, DataTypes) {
     }, {
         tableName: 'users'
     });
+
+    users.associate = function (models) {
+        // associations can be defined here
+    };
+    return users;
 };

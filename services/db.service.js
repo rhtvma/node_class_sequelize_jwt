@@ -7,6 +7,7 @@ const config = require('config'),
 class DBService {
     constructor() {
         this.pool = mysql.createPool(mysqlConfig);
+        this.conf = config.get('configuration');
     }
 
     executeQuery(q, params, cb) {

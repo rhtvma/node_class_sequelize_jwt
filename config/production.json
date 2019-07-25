@@ -9,9 +9,6 @@
             "timestamps": false
         }
     },
-    "constants": {
-        "port": 3000
-    },
     "configuration": {
         "host": "http://localhost",
         "port": 3000,
@@ -28,15 +25,36 @@
         "sslBase": "http://localhost:8082",
         "session": {
             "secret": "@49a12g!"
-        }
-    },
-    "routes": {
-        "project": {
-            "projectList": "/projectList",
-            "projectCreate": "/projectCreate"
         },
-        "users": {
-            "usersList": "/usersList"
+        "constants": {
+            "port": 3000
+        },
+        "cipho": {
+            "algo": "aes-256-cbc",
+            "passPhrase": "R3^re$_r39a!@G",
+            "salt": "*vihs#",
+            "iteration": 3,
+            "length": 64,
+            "digest": "sha512"
+        },
+        "routes": {
+            "auth": {
+                "signin": "/signin",
+                "signup": "/signup"
+            },
+            "project": {
+                "projectList": "/projectList",
+                "projectCreate": "/projectCreate"
+            },
+            "users": {
+                "usersList": "/usersList"
+            }
+        },
+        "queries": {
+            "auth": {
+                "signin": "",
+                "signup": ""
+            }
         }
     }
 }

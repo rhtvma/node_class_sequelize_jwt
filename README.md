@@ -11,9 +11,11 @@
     Images : http://localhost:3000/images/dummy-profile.jpg
     
 ### Default Routes :
-    GET : UserList :  http://localhost:3000/usersList
-    GET :  projectList :  http://localhost:3000/projectList
-    POST : projectCreate :  http://localhost:3000/projectCreate
+    POST : SignIn :  http://localhost:3000/auth/signin
+    
+    GET : UserList :  http://localhost:3000/api/usersList
+    GET :  projectList :  http://localhost:3000/api/projectList
+    POST : projectCreate :  http://localhost:3000/api/projectCreate
     
 ### Config Information :
     Config path : \node_class_sequelize_jwt\config
