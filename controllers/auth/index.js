@@ -12,10 +12,10 @@ class AuthRouter {
         this.router = express.Router();
 
         this.router.route(this.routes.auth.signin)
-            .get(this._authController.signin.bind(this._authController));
+            .post(this._authController.signin.bind(this._authController));
 
         this.router.route(this.routes.auth.signup)
-            .get(this._authController.signup.bind(this._authController));
+            .post(this._authController.signup.bind(this._authController));
 
     }
 

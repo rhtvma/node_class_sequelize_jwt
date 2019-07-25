@@ -16,18 +16,16 @@ class ProjectController {
     }
 
     signup(req, res, next) {
-        let {firstName, lastName, password, username, age, imageURL} = req.body;
-        password = '12345';
-        username = 'rhtvma';
+        const {firstName, lastName, password, username, age, imageURL} = req.body;
         try {
             UsersModel
                 .build({
-                    "firstName": firstName || 'Rohit',
-                    "lastName": lastName || 'Verma',
+                    "firstName": firstName,
+                    "lastName": lastName,
                     "password": this._cryptService.createPassword(password),
                     "username1": username,
                     "username": this._cryptService.encrypt((username).trim().toLowerCase()),
-                    "age": age || 26,
+                    "age": age,
                     "imageURL": imageURL || 'http://localhost:3000/images/dummy-profile.jpg',
                 })
                 .save()
@@ -57,9 +55,7 @@ class ProjectController {
     }
 
     signin(req, res, next) {
-        let {username, password} = req.body;
-        password = '12345';
-        username = 'rhtvma';
+        const {username, password} = req.body;
         const params = {
             username: `${this._cryptService.encrypt((username || '').trim().toLowerCase())}`,
             password: `${this._cryptService.createPassword(password)}`
