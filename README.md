@@ -5,13 +5,14 @@
     Class
     Sequelize
     MySQL
-    JWT [Yet to implement]
+    JWT [In Progress]
 
 ### Public Access :  
     Images : http://localhost:3000/images/dummy-profile.jpg
     
 ### Default Routes :
     POST : SignIn :  http://localhost:3000/auth/signin
+    POST : SignUp :  http://localhost:3000/auth/signup
     
     GET : UserList :  http://localhost:3000/api/usersList
     GET :  projectList :  http://localhost:3000/api/projectList
