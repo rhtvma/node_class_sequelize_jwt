@@ -12,15 +12,25 @@ class AuthRouter {
         this._authController = new AuthController();
 
         this.validateRequest = SchemaValidator(true);
+        // generic route handler
+        this.genericHandler = (req, res, next) => {
+            res.json({
+                status: 'success',
+                data: req.body
+            });
+        };
+
 
         this.router = express.Router();
 
         this.router.route(this.routes.auth.signin)
             .post(this.validateRequest,
+                this.genericHandler,
                 this._authController.signIn.bind(this._authController));
 
         this.router.route(this.routes.auth.signup)
             .post(this.validateRequest,
+                this.genericHandler,
                 this._authController.signUp.bind(this._authController));
 
     }
