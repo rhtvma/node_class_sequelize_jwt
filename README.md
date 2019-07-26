@@ -1,11 +1,11 @@
 # node_class_sequelize_jwt
 
 ### Features :
-    Node
-    Class
-    Sequelize
-    MySQL
-    JWT [In Progress]
+    Node [Implemented]
+    Class [Implemented]
+    Sequelize | MySQL [Implemented]
+    @hapi/joi Validation  [Implemented]
+    JWT [In Progress] [Implemented]
 
 ### Public Access :  
     Images : http://localhost:3000/images/dummy-profile.jpg
