@@ -63,15 +63,6 @@ class AuthController {
 
     signIn(req, res, next) {
         const {email, password} = req.body;
-
-        // const {error, value} = UsersSchema.validation({email: email, password: password});
-        // if (error) {
-        //     return res.status(422).json({
-        //         msg: `Invalid request data`,
-        //         data: error.details || [],
-        //         status: false
-        //     });
-        // }
         const params = {
             email: `${this._cryptService.encrypt((email || '').trim().toLowerCase())}`,
             password: `${this._cryptService.createPassword(password)}`

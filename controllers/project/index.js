@@ -3,22 +3,6 @@ const express = require('express'),
 
 const config = require('config');
 
-/**
- * @swagger
- * definitions:
- *   Puppy:
- *     properties:
- *       name:
- *         type: string
- *       breed:
- *         type: string
- *       age:
- *         type: integer
- *       sex:
- *         type: string
- */
-
-
 class ProjectRouter {
     constructor() {
         this.routes = config.get('configuration.routes');
@@ -31,9 +15,6 @@ class ProjectRouter {
 
         this.router.route(this.routes.project.projectCreate)
             .post(this._projectController.projectCreate.bind(this._projectController));
-
-        this.router.route(this.routes.users.usersList)
-            .get(this._projectController.usersList.bind(this._projectController));
 
     }
 

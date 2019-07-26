@@ -37,6 +37,14 @@
             "length": 64,
             "digest": "sha512"
         },
+        "jwt": {
+            "secret": "R3^re$_r39a!@G",
+            "algorithm": "HS256",
+            "tokenLife": "1d",
+            "issuer": "!612A94@9p",
+            "audience": "",
+            "subject": ""
+        },
         "routes": {
             "auth": {
                 "signin": "/signin",
@@ -47,7 +55,8 @@
                 "projectCreate": "/projectCreate"
             },
             "users": {
-                "usersList": "/usersList"
+                "profile": "/profile/:id",
+                "allUsers": "/allUsers"
             }
         },
         "queries": {

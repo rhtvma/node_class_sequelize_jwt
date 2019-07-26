@@ -35,6 +35,7 @@ const ageSchema = Joi.alternatives().try([
 const userDataSchema = Joi.object().keys({
     name: name.required(),
     email: email.required(),
+    password: Joi.string().min(5).required(),
     role: Joi.string().valid('user', 'admin').uppercase(),
     sex: Joi.string().valid(['M', 'F', 'MALE', 'FEMALE']).uppercase(),
     // if type is STUDENT, then age is required
