@@ -2,19 +2,25 @@ const express = require('express'),
     methodOverride = require('method-override'),
     bodyParser = require('body-parser'),
     cors = require('cors'),
-    loggingService = new (require('./services').LoggerService)(),
-    AppRouter = require('./routes');
+    Services = require('./services'),
+    // loggingService = new (require('./services').LoggerService)(),
+    AppRouter = require('./routes'),
+    SessionController = new (require('./controllers/authentication/session.controller'))();
 
 
 const config = require('config');
 
 class TestServer {
     constructor() {
+        this._authService = new Services.AuthService();
+        this._loggingService = new Services.LoggerService();
+
+
         this.conf = config.get('configuration');
         this.mysqlconf = config.get('mysql');
-        this.testServer = express();
+        this._app = express();
         /*Load public*/
-        // this.testServer.use(express.static(__dirname + '/../public/dist'));
+        // this._app.use(express.static(__dirname + '/../public/dist'));
 
         /*Logger*/
         this._initiateLogging();
@@ -30,19 +36,29 @@ class TestServer {
 
         /**Routes*/
         /* Common of All routes. */
-        this.testServer.use('*', (req, res, next) => {
+        this._app.use('*', (req, res, next) => {
             res.setHeader(this.conf.httpHeaders.names.contentType, this.conf.httpHeaders.values.appJson);
             next();
         });
 
         /* The default route. */
         this.appRouter = new AppRouter();
-        this.testServer.use('/', [
-            this.appRouter.subRoutes.globalRoute
+        this._app.use('/', [
+            this.appRouter.subRoutes.globalRoute,
+            this.appRouter.subRoutes.authRoute
         ]);
-        this.testServer.use('/auth', this.appRouter.subRoutes.authRoute);
+
+        this._app.use('/auth', (req, res, next) => {
+            const clientIpUF = req.ip || '';
+            const clientIp = clientIpUF.replace(/^.*:/, '');
+            console.info(`Token : ${!!req.headers.authorization} | CLIENT : ${clientIp}  | API Request : ${req.originalUrl}`);
+            next();
+        })
+
+
+        this._app.use('/auth', SessionController.validateRequest.bind(SessionController),
+            [this.appRouter.subRoutes.secureRoutes]);
         /* Secure Routes */
-        this.testServer.use('/api', this.appRouter.subRoutes.secureRoutes);
         /******/
 
         /*Error Handler middleware*/
@@ -51,7 +67,7 @@ class TestServer {
 
     /*Public Property to get App from Module Instance*/
     get app() {
-        return this.testServer;
+        return this._app;
     }
 
     /**Private Methods**/
@@ -59,8 +75,8 @@ class TestServer {
         /**
          * Initiating Bunyan
          */
-        this.err = loggingService.fatalLogger;
-        this.testServer.set('logg', loggingService.logger);
+        this.err = this._loggingService.fatalLogger;
+        this._app.set('logg', this._loggingService.logger);
     }
 
     _setSessionMiddleware() {
@@ -69,8 +85,8 @@ class TestServer {
          */
         // const sessionStore = new mySqlSessionStore(this.conf.mysqlconf);
 
-        this.testServer.set('trust proxy', 1);
-        // this.testServer.use(session({
+        this._app.set('trust proxy', 1);
+        // this._app.use(session({
         //     // key: '',
         //     secret: this.conf.session.secret,
         //     store: sessionStore,
@@ -88,21 +104,21 @@ class TestServer {
         /**
          * Setting middleware
          */
-        this.testServer.locals.base = __dirname;
-        this.testServer.locals.conf = this.conf;
-        this.testServer.use(methodOverride())                                  // Express Middleware
+        this._app.locals.base = __dirname;
+        this._app.locals.conf = this.conf;
+        this._app.use(methodOverride())                                  // Express Middleware
             .use(bodyParser.json())                                       // Express BodyParser
             .use(bodyParser.urlencoded({extended: true}))
             // .use(multipart())
             // .use(helmet())
             .use(cors());
 
-        this.testServer.use('/public', express.static('./public'));
-        this.testServer.use('/images', express.static('./public/serve/images'));
+        this._app.use('/public', express.static('./public'));
+        this._app.use('/images', express.static('./public/serve/images'));
     }
 
     _setErrorHandler() {
-        this.testServer.use((err, req, res, next) => {                         // Error Handler - will be called by next(err).
+        this._app.use((err, req, res, next) => {                         // Error Handler - will be called by next(err).
             this.err.fatal(err);
 
             /*Checking whether response has been sent to client*/

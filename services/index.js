@@ -3,7 +3,7 @@ const LoggerService = require('./logger.service');
 const UtilityService = require('./utilities.service');
 const CipherService = require('./cipher.service');
 const ConstantService = require('./constants.service');
-const AuthService = require('./auth.service');
+const TokenService = require('./auth.service');
 
 
 module.exports = {
@@ -12,5 +12,5 @@ module.exports = {
     UtilityService: UtilityService,
     CipherService: CipherService,
     ConstantService: ConstantService,
-    AuthService: AuthService,
+    AuthService: TokenService,
 }

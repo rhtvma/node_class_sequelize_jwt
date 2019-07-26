@@ -55,7 +55,8 @@
                 "projectCreate": "/projectCreate"
             },
             "users": {
-                "usersList": "/usersList"
+                "profile": "/profile/:id",
+                "allUsers": "/allUsers"
             }
         },
         "queries": {

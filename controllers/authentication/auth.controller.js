@@ -15,33 +15,30 @@ class ProjectController {
         this.queries = this.conf.queries;
     }
 
-    signup(req, res, next) {
-        const {firstName, lastName, password, username, age, imageURL} = req.body;
+    signUp(req, res, next) {
+        const {name, password, email} = req.body;
         try {
             UsersModel
                 .build({
-                    "firstName": firstName,
-                    "lastName": lastName,
+                    "name": name,
                     "password": this._cryptService.createPassword(password),
-                    "username1": username,
-                    "username": this._cryptService.encrypt((username).trim().toLowerCase()),
-                    "age": age,
-                    "imageURL": imageURL || 'http://localhost:3000/images/dummy-profile.jpg',
+                    "email": this._cryptService.encrypt((email).trim().toLowerCase()),
+                    "imageURL": 'http://localhost:3000/images/dummy-profile.jpg',
                 })
                 .save()
                 .then(result => {
                     console.log(result.id);
                     res.status(200).json({
+                        status: true,
                         data: [{profileImage: result.imageURL}],
-                        msg: "User Created",
-                        status: 1
+                        msg: "User Created"
                     });
                 })
                 .catch(error => {
                     res.status(200).json({
                         data: [],
                         msg: error.message || "Code error",
-                        status: 3
+                        status: false
                     });
                 })
         } catch (err) {
@@ -49,15 +46,15 @@ class ProjectController {
             res.status(200).json({
                 data: [],
                 msg: err.message || "Code error",
-                status: 4
+                status: false
             });
         }
     }
 
-    signin(req, res, next) {
-        const {username, password} = req.body;
+    signIn(req, res, next) {
+        const {email, password} = req.body;
         const params = {
-            username: `${this._cryptService.encrypt((username || '').trim().toLowerCase())}`,
+            email: `${this._cryptService.encrypt((email || '').trim().toLowerCase())}`,
             password: `${this._cryptService.createPassword(password)}`
         };
 
@@ -71,7 +68,7 @@ class ProjectController {
                 if (rows === null) {
                     res.status(500).json({
                         error: `Authentication Failed.`,
-                        message: `Authentication Failed.`,
+                        msg: `Authentication Failed.`,
                         data: {}
                     });
 
@@ -82,7 +79,7 @@ class ProjectController {
                     if (!userData.active) {
                         res.status(500).json({
                             error: `User is not active, Please contact administrator.`,
-                            message: `User is not active, Please contact administrator.`,
+                            msg: `User is not active, Please contact administrator.`,
                             data: {}
                         });
 
@@ -90,8 +87,7 @@ class ProjectController {
                         logg.error(`User is not active, Please contact administrator.`);
                         return;
                     }
-                    userData.firstName = userData.firstName; // this._cryptService.decrypt(userData.firstName);
-                    userData.lastName = userData.lastName; //this._cryptService.decrypt(userData.lastName);
+                    userData.name = userData.name; // this._cryptService.decrypt(userData.firstName);
                     userData.email = this._cryptService.decrypt(userData.email);
                     delete userData.password;
                     userData.token = '';
@@ -99,8 +95,7 @@ class ProjectController {
 
                     const userDetails = {
                         id: userData.id,
-                        firstName: userData.firstName,
-                        lastName: userData.lastName,
+                        name: userData.name,
                         email: userData.email,
                         role: userData.role,
                         imageURL: userData.imageURL
@@ -110,7 +105,7 @@ class ProjectController {
                         if (!!e) {
                             res.status(500).json({
                                 error: `Session Creation error: ${e}`,
-                                message: ``,
+                                msg: ``,
                                 data: {}
                             });
 
@@ -122,7 +117,8 @@ class ProjectController {
                             logg.info('Login completed successfully.');
                             res.status(200).json({
                                 error: null,
-                                message: 'Request completed successfully.',
+                                status: true,
+                                msg: 'Request completed successfully.',
                                 payload: (tok || null),
                             });
                         }
@@ -134,7 +130,7 @@ class ProjectController {
                 if (!!err) {
                     res.status(500).json({
                         error: `${err.code} - ${err.message}`,
-                        message: err.message,
+                        msg: err.message,
                         data: {}
                     });
 

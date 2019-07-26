@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const logger = new (require('./logger.service'))().logger;
 
 const config = require('config'),

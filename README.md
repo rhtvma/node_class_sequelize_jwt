@@ -11,12 +11,12 @@
     Images : http://localhost:3000/images/dummy-profile.jpg
     
 ### Default Routes :
-    POST : SignIn :  http://localhost:3000/auth/signin
-    POST : SignUp :  http://localhost:3000/auth/signup
+    POST : SignIn :  http://localhost:3000/signin
+    POST : SignUp :  http://localhost:3000/signup
     
-    GET : UserList :  http://localhost:3000/api/usersList
-    GET :  projectList :  http://localhost:3000/api/projectList
-    POST : projectCreate :  http://localhost:3000/api/projectCreate
+    GET : UserList :  http://localhost:3000/auth/usersList
+    GET :  projectList :  http://localhost:3000/auth/projectList
+    POST : projectCreate :  http://localhost:3000/auth/projectCreate
     
 ### Config Information :
     Config path : \node_class_sequelize_jwt\config
@@ -45,8 +45,10 @@
     2: npm install pm2 -g
     3: create a database in MySQL, And update config accordingly
     4: pm2 start ecosystem.config.js --env production --only server [For production mode]
-                          ----------------OR----------------
+                          ---------------- OR ----------------
     5: pm2 start ecosystem.config.js --env development --only server [For development mode]
+    
+
  
     
     
