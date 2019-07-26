@@ -6,17 +6,27 @@ const logg = new Services.LoggerService('Signup', true).logger,
 const config = require('config');
 const UsersModel = require('../../models').users;
 
-class ProjectController {
+class AuthController {
     constructor() {
+        this.conf = config.get('configuration');
+        this.queries = this.conf.queries;
         this._cryptService = new Services.CipherService();
         this._utilityService = new Services.UtilityService();
         this._authService = new Services.AuthService();
-        this.conf = config.get('configuration');
-        this.queries = this.conf.queries;
     }
 
     signUp(req, res, next) {
         const {name, password, email} = req.body;
+        // const {error, value} = UsersSchema.validation({name: name, email: email, password: password});
+        // if (error) {
+        //     // send a 422 error response if validation fails
+        //     return res.status(422).json({
+        //         msg: `Invalid request data`,
+        //         data: error.details || [],
+        //         status: false
+        //     });
+        // }
+
         try {
             UsersModel
                 .build({
@@ -53,6 +63,15 @@ class ProjectController {
 
     signIn(req, res, next) {
         const {email, password} = req.body;
+
+        // const {error, value} = UsersSchema.validation({email: email, password: password});
+        // if (error) {
+        //     return res.status(422).json({
+        //         msg: `Invalid request data`,
+        //         data: error.details || [],
+        //         status: false
+        //     });
+        // }
         const params = {
             email: `${this._cryptService.encrypt((email || '').trim().toLowerCase())}`,
             password: `${this._cryptService.createPassword(password)}`
@@ -146,4 +165,4 @@ class ProjectController {
     }
 }
 
-module.exports = ProjectController;
+module.exports = AuthController;
