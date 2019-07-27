@@ -21,7 +21,7 @@ class AuthController {
         // if (error) {
         //     // send a 422 error response if validation fails
         //     return res.status(422).json({
-        //         msg: `Invalid request data`,
+        //         message: `Invalid request data`,
         //         data: error.details || [],
         //         status: false
         //     });
@@ -41,13 +41,13 @@ class AuthController {
                     res.status(200).json({
                         status: true,
                         data: [{profileImage: result.imageURL}],
-                        msg: "User Created"
+                        message: "User Created"
                     });
                 })
                 .catch(error => {
                     res.status(200).json({
                         data: [],
-                        msg: error.message || "Code error",
+                        message: error.message || "Code error",
                         status: false
                     });
                 })
@@ -55,7 +55,7 @@ class AuthController {
             console.log(err);
             res.status(200).json({
                 data: [],
-                msg: err.message || "Code error",
+                message: err.message || "Code error",
                 status: false
             });
         }
@@ -71,14 +71,15 @@ class AuthController {
         UsersModel.findOne(
             {
                 raw: true,
-                where: params
+                where: params,
+                attributes: ['id', 'email', 'role', 'name', 'active', 'imageURL', 'createdAt']
             })
             .then(async (rows) => {
                 let userData = rows;
                 if (rows === null) {
                     res.status(500).json({
-                        error: `Authentication Failed.`,
-                        msg: `Authentication Failed.`,
+                        status: false,
+                        message: `Authentication Failed.`,
                         data: {}
                     });
 
@@ -88,8 +89,8 @@ class AuthController {
 
                     if (!userData.active) {
                         res.status(500).json({
-                            error: `User is not active, Please contact administrator.`,
-                            msg: `User is not active, Please contact administrator.`,
+                            status: false,
+                            message: `User is not active, Please contact administrator.`,
                             data: {}
                         });
 
@@ -115,7 +116,7 @@ class AuthController {
                         if (!!e) {
                             res.status(500).json({
                                 error: `Session Creation error: ${e}`,
-                                msg: ``,
+                                message: ``,
                                 data: {}
                             });
 
@@ -128,7 +129,7 @@ class AuthController {
                             res.status(200).json({
                                 error: null,
                                 status: true,
-                                msg: 'Request completed successfully.',
+                                message: 'Request completed successfully.',
                                 payload: (tok || null),
                             });
                         }
@@ -140,7 +141,7 @@ class AuthController {
                 if (!!err) {
                     res.status(500).json({
                         error: `${err.code} - ${err.message}`,
-                        msg: err.message,
+                        message: err.message,
                         data: {}
                     });
 

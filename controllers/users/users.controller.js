@@ -25,14 +25,14 @@ class ProjectController {
         UsersModel.findOne(
             {
                 raw: true,
-                where: params
+                where: params,
+                attributes: ['id', 'email', 'role', 'name', 'active', 'imageURL', 'createdAt']
             })
-            .then(async (rows) => {
-                let userData = rows;
+            .then((rows) => {
                 if (rows === null) {
                     res.status(500).json({
-                        error: `User profile Request Failed.`,
-                        msg: `User profile Request Failed.`,
+                        status: false,
+                        message: `User profile Request Failed.`,
                         data: {}
                     });
 
@@ -40,11 +40,14 @@ class ProjectController {
                     logg.error(`User profile Request Failed.`);
                 } else {
                     logg.info('User profile Request completed successfully.');
+                    const userData = rows;
+                    userData.email = this._cryptService.decrypt(rows.email);
+
                     res.status(200).json({
                         error: null,
                         status: true,
-                        msg: 'Request completed successfully.',
-                        data: rows || []
+                        message: 'Request completed successfully.',
+                        data: userData || []
                     });
                 }
             })
@@ -53,7 +56,7 @@ class ProjectController {
                 if (!!err) {
                     res.status(500).json({
                         error: `${err.code} - ${err.message}`,
-                        msg: err.message,
+                        message: err.message,
                         data: {}
                     });
 
@@ -72,13 +75,14 @@ class ProjectController {
             {
                 raw: true,
                 // where: params
+                attributes: ['id', 'email', 'role', 'name', 'active', 'imageURL', 'createdAt']
             })
             .then(async (rows) => {
                 let userData = rows;
                 if (rows === null) {
                     res.status(500).json({
                         error: `AllUser profile Request Failed.`,
-                        msg: `AllUser profile Request Failed.`,
+                        message: `AllUser profile Request Failed.`,
                         data: {}
                     });
 
@@ -86,11 +90,17 @@ class ProjectController {
                     logg.error(`AllUser profile Request Failed.`);
                 } else {
                     logg.info('AllUser profile Request completed successfully.');
+
+                    const updatedResult = rows.map((val, i) => {
+                        val.email = this._cryptService.decrypt(val.email);
+                        return val;
+                    })
+
                     res.status(200).json({
                         error: null,
                         status: true,
-                        msg: 'Request completed successfully.',
-                        data: rows || []
+                        message: 'Request completed successfully.',
+                        data: updatedResult || []
                     });
                 }
             })
@@ -99,7 +109,7 @@ class ProjectController {
                 if (!!err) {
                     res.status(500).json({
                         error: `${err.code} - ${err.message}`,
-                        msg: err.message,
+                        message: err.message,
                         data: {}
                     });
 

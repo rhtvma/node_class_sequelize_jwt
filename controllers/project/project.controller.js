@@ -37,7 +37,7 @@ class ProjectController {
                     UserProjectMapping.bulkCreate(userProjectMappingArr).then(usersRe => {
                         res.status(200).json({
                             status: 1,
-                            msg: "Success",
+                            message: "Success",
                             data: usersRe
                         });
                     })
@@ -45,7 +45,7 @@ class ProjectController {
                 .catch(error => {
                     res.status(200).json({
                         data: [],
-                        msg: error.message || "Code error",
+                        message: error.message || "Code error",
                         status: 3
                     });
                 })
@@ -53,7 +53,7 @@ class ProjectController {
             console.log(err);
             res.status(200).json({
                 data: [],
-                msg: err.message || "Code error",
+                message: err.message || "Code error",
                 status: 4
             });
         }
@@ -67,14 +67,14 @@ class ProjectController {
                     if (result.length > 0) {
                         res.status(200).json({
                             status: 1,
-                            msg: "Success",
+                            message: "Success",
                             data: result
                         });
                         console.timeEnd('request');
                     } else {
                         res.status(200).json({
                             data: [],
-                            msg: "No Record Found",
+                            message: "No Record Found",
                             status: 2
                         });
                     }
@@ -84,7 +84,7 @@ class ProjectController {
                     logg.error(`${err.code} ${err.message}`);
                     res.status(200).json({
                         data: [],
-                        msg: err.message || "Code error",
+                        message: err.message || "Code error",
                         status: 3
                     });
                 });
@@ -92,7 +92,7 @@ class ProjectController {
             (err) {
             res.status(200).json({
                 data: [],
-                msg: err.message || "Code error",
+                message: err.message || "Code error",
                 status: 4
             });
         }
@@ -133,14 +133,14 @@ class ProjectController {
                     if (result.length > 0) {
                         res.status(200).json({
                             status: 1,
-                            msg: "Success",
+                            message: "Success",
                             data: result
                         });
                         console.timeEnd('request');
                     } else {
                         res.status(200).json({
                             data: [],
-                            msg: "No Record Found",
+                            message: "No Record Found",
                             status: 2
                         });
                     }
@@ -149,7 +149,7 @@ class ProjectController {
                     logg.error(`${err.code} ${err.message}`);
                     res.status(200).json({
                         data: [],
-                        msg: err.message || "Code error",
+                        message: err.message || "Code error",
                         status: 3
                     });
                 });
@@ -157,7 +157,7 @@ class ProjectController {
             (err) {
             res.status(200).json({
                 data: [],
-                msg: err.message || "Code error",
+                message: err.message || "Code error",
                 status: 4
             });
         }
