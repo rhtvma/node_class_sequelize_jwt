@@ -212,14 +212,12 @@ class ProjectController {
                             });
                         }
                     }).catch((err) => {
-                        return reject({
+                        res.status(200).json({
                             status: false,
-                            message: `Error while Deletion of Crawler_Zip `,
-                            err_data: err
+                            message: 'Request failed.',
+                            data: []
                         });
                     });
-
-
                 }
             })
             .catch((err) => {
