@@ -44,7 +44,7 @@ class ProjectController {
                     userData.email = this._cryptService.decrypt(rows.email);
 
                     res.status(200).json({
-                        error: null,
+
                         status: true,
                         message: 'Request completed successfully.',
                         data: userData || []
@@ -67,14 +67,9 @@ class ProjectController {
     }
 
     allUsers(req, res, next) {
-        const params = {
-            // id: `${id}`
-        };
-
         UsersModel.findAll(
             {
                 raw: true,
-                // where: params
                 attributes: ['id', 'email', 'role', 'name', 'active', 'imageURL', 'createdAt']
             })
             .then(async (rows) => {
@@ -97,11 +92,134 @@ class ProjectController {
                     })
 
                     res.status(200).json({
-                        error: null,
+
                         status: true,
                         message: 'Request completed successfully.',
                         data: updatedResult || []
                     });
+                }
+            })
+            .catch((err) => {
+                console.log('Query executed with error');
+                if (!!err) {
+                    res.status(500).json({
+                        error: `${err.code} - ${err.message}`,
+                        message: err.message,
+                        data: {}
+                    });
+
+                    console.timeEnd('Login request');
+                    logg.error(`${err.code} ${err.message}`);
+                }
+            });
+    }
+
+    editUser(req, res, next) {
+        const {id} = req.body;
+        UsersModel.findOne(
+            {
+                raw: true,
+                where: params,
+                attributes: ['id', 'email', 'role', 'name', 'active', 'imageURL', 'createdAt']
+            })
+            .then((rows) => {
+                if (rows === null) {
+                    res.status(500).json({
+                        status: false,
+                        message: `User profile Request Failed.`,
+                        data: {}
+                    });
+                    const updateArgs = req.body,
+                        whereArgs = {
+                            id: id
+                        };
+                    UsersModel.update(
+                        updateArgs, {
+                            where: whereArgs
+                        })
+                        .then(async (response) => {
+                            res.status(200).json({
+                                status: true,
+                                message: 'Request completed successfully.',
+                                data: []
+                            });
+                        })
+                        .catch((error) => {
+                            res.status(200).json({
+                                status: false,
+                                message: 'Request failed.',
+                                data: []
+                            });
+                        });
+                    console.timeEnd('User profile Request');
+                    logg.error(`User profile Request Failed.`);
+                } else {
+                    logg.info('User profile Request completed successfully.');
+                }
+            })
+            .catch((err) => {
+                console.log('Query executed with error');
+                if (!!err) {
+                    res.status(500).json({
+                        error: `${err.code} - ${err.message}`,
+                        message: err.message,
+                        data: {}
+                    });
+
+                    console.timeEnd('Login request');
+                    logg.error(`${err.code} ${err.message}`);
+                }
+            });
+    }
+
+    deleteUser(req, res, next) {
+        const {id} = req.params;
+        const params = {
+            id: `${id}`
+        };
+
+        UsersModel.findOne(
+            {
+                raw: true,
+                where: params,
+                attributes: ['id', 'email', 'role', 'name', 'active', 'imageURL', 'createdAt']
+            })
+            .then((rows) => {
+                if (rows === null) {
+                    res.status(500).json({
+                        status: false,
+                        message: `User profile Request Failed.`,
+                        data: {}
+                    });
+
+                    console.timeEnd('User profile Request');
+                    logg.error(`User profile Request Failed.`);
+                } else {
+                    return UsersModel.destroy({
+                        where: params
+                    }).then((rowDeleted) => {
+                        if (rowDeleted === 1) {
+                            res.status(200).json({
+                                status: true,
+                                message: 'Request completed successfully.',
+                                data: []
+                            });
+                        } else {
+                            res.status(200).json({
+                                status: false,
+                                message: 'Request failed.',
+                                data: []
+                            });
+                        }
+                    }).catch((err) => {
+                        return reject({
+                            status: false,
+                            message: `Error while Deletion of Crawler_Zip `,
+                            err_data: err
+                        });
+                    });
+
+
                 }
             })
             .catch((err) => {

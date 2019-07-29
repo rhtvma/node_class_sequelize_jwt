@@ -17,32 +17,46 @@ class AuthController {
 
     signUp(req, res, next) {
         const {name, password, email} = req.body;
-        // const {error, value} = UsersSchema.validation({name: name, email: email, password: password});
-        // if (error) {
-        //     // send a 422 error response if validation fails
-        //     return res.status(422).json({
-        //         message: `Invalid request data`,
-        //         data: error.details || [],
-        //         status: false
-        //     });
-        // }
-
         try {
-            UsersModel
-                .build({
-                    "name": name,
-                    "password": this._cryptService.createPassword(password),
-                    "email": this._cryptService.encrypt((email).trim().toLowerCase()),
-                    "imageURL": 'http://localhost:3000/images/dummy-profile.jpg',
+            UsersModel.findOne(
+                {
+                    raw: true,
+                    where: {email: `${this._cryptService.encrypt((email || '').trim().toLowerCase())}`},
+                    attributes: ['id']
                 })
-                .save()
-                .then(result => {
-                    console.log(result.id);
-                    res.status(200).json({
-                        status: true,
-                        data: [{profileImage: result.imageURL}],
-                        message: "User Created"
-                    });
+                .then((rows) => {
+                    if (rows) {
+                        return res.status(409).json({
+                            status: false,
+                            data: [],
+                            message: "User already exists"
+                        });
+                    } else {
+                        UsersModel
+                            .build({
+                                "name": name,
+                                "password": this._cryptService.createPassword(password),
+                                "email": this._cryptService.encrypt((email).trim().toLowerCase()),
+                                "imageURL": 'http://localhost:3000/images/dummy-profile.jpg',
+                            })
+                            .save()
+                            .then(result => {
+                                console.log(result.id);
+                                res.status(200).json({
+                                    status: true,
+                                    data: [{profileImage: result.imageURL}],
+                                    message: "User Created"
+                                });
+                            })
+                            .catch(error => {
+                                res.status(200).json({
+                                    data: [],
+                                    message: error.message || "Code error",
+                                    status: false
+                                });
+                            })
+                    }
+
                 })
                 .catch(error => {
                     res.status(200).json({
@@ -51,6 +65,7 @@ class AuthController {
                         status: false
                     });
                 })
+
         } catch (err) {
             console.log(err);
             res.status(200).json({

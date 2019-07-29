@@ -44,9 +44,11 @@
     1: npm install
     2: npm install pm2 -g
     3: create a database in MySQL, And update config accordingly
+    4: NODE_ENV=development node main.js
+                          ---------------- OR ----------------
     4: pm2 start ecosystem.config.js --env production --only server [For production mode]
                           ---------------- OR ----------------
-    5: pm2 start ecosystem.config.js --env development --only server [For development mode]
+    4: pm2 start ecosystem.config.js --env development --only server [For development mode]
     
 
  

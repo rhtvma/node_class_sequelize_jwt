@@ -56,7 +56,9 @@
             },
             "users": {
                 "profile": "/profile/:id",
-                "allUsers": "/allUsers"
+                "allUsers": "/allUsers",
+                "editUser": "/editUser",
+                "deleteUser": "/deleteUser/:id"
             }
         },
         "queries": {

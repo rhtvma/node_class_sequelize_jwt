@@ -30,7 +30,7 @@ const signupSchema = Joi.object().keys({
         then: ageSchema, //.required(),
         otherwise: ageSchema
     })
-})
+});
 
 
 const signinSchema = Joi.object({
@@ -38,9 +38,22 @@ const signinSchema = Joi.object({
     password: Joi.string().min(5).required()
 });
 
+const editUserSchema = Joi.object().keys({
+    name: name,
+    email: email,
+    role: Joi.string().valid('user', 'admin').uppercase(),
+    sex: Joi.string().valid(['M', 'F', 'MALE', 'FEMALE']).uppercase(),
+    age: Joi.when('type', {// if type is STUDENT, then age is required
+        is: 'user',
+        then: ageSchema, //.required(),
+        otherwise: ageSchema
+    })
+});
 
 // export the schemas
 module.exports = {
     '/signup': signupSchema,
-    '/signin': signinSchema
+    '/signin': signinSchema,
+    //users
+    '/editUser': editUserSchema,
 };

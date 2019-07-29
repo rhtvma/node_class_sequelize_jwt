@@ -66,12 +66,9 @@ module.exports = (useJoiError = false) => {
                         req.body = data;
                         next();
                     }
-
                 });
-
             }
         }
-
         next();
     };
 };
