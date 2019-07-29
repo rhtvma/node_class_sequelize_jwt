@@ -9,14 +9,7 @@
 
 ### Public Access :  
     Images : http://localhost:3000/images/dummy-profile.jpg
-    
-### Default Routes :
-    POST : SignIn :  http://localhost:3000/signin
-    POST : SignUp :  http://localhost:3000/signup
-    
-    GET : UserList :  http://localhost:3000/auth/usersList
-    GET :  projectList :  http://localhost:3000/auth/projectList
-    POST : projectCreate :  http://localhost:3000/auth/projectCreate
+
     
 ### Config Information :
     Config path : \node_class_sequelize_jwt\config
@@ -54,3 +47,30 @@
  
     
     
+    
+### Default Routes :
+    POST : SignIn :  http://localhost:3000/signin
+    POST : SignUp :  http://localhost:3000/signup
+    
+    GET : UserList :  http://localhost:3000/auth/usersList
+    GET :  projectList :  http://localhost:3000/auth/projectList
+    POST : projectCreate :  http://localhost:3000/auth/projectCreate
+    
+    
+     "routes": 
+          {
+                "auth": {
+                    "signin": "/signin",
+                    "signup": "/signup"
+                },
+                "project": {
+                    "projectList": "/projectList",
+                    "projectCreate": "/projectCreate"
+                },
+                "users": {
+                    "profile": "/profile/:id",
+                    "allUsers": "/allUsers",
+                    "editUser": "/editUser",
+                    "deleteUser": "/deleteUser/:id"
+                }
+          }
