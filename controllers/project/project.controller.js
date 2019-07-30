@@ -59,45 +59,6 @@ class ProjectController {
         }
     }
 
-    usersList(req, res, next) {
-        try {
-            return Users.all()
-                .then((result) => {
-                    logg.info('completed successfully.');
-                    if (result.length > 0) {
-                        res.status(200).json({
-                            status: 1,
-                            message: "Success",
-                            data: result
-                        });
-                        console.timeEnd('request');
-                    } else {
-                        res.status(200).json({
-                            data: [],
-                            message: "No Record Found",
-                            status: 2
-                        });
-                    }
-                })
-                .catch((err) => {
-                    console.timeEnd('request');
-                    logg.error(`${err.code} ${err.message}`);
-                    res.status(200).json({
-                        data: [],
-                        message: err.message || "Code error",
-                        status: 3
-                    });
-                });
-        } catch
-            (err) {
-            res.status(200).json({
-                data: [],
-                message: err.message || "Code error",
-                status: 4
-            });
-        }
-    }
-
     projectList(req, res, next) {
         UserProjectMapping.belongsTo(Project, {targetKey: 'id', foreignKey: 'projectId'});
         UserProjectMapping.belongsTo(Users, {targetKey: 'id', foreignKey: 'userId'});

@@ -7,6 +7,8 @@ const express = require('express'),
     AppRouter = require('./routes'),
     SessionController = new (require('./controllers/authentication/session.controller'))();
 
+const UsersModel = require('./models').users;
+
 
 const config = require('config');
 
@@ -14,7 +16,7 @@ class TestServer {
     constructor() {
         this._authService = new Services.AuthService();
         this._loggingService = new Services.LoggerService();
-
+        this._cryptService = new Services.CipherService();
 
         this.conf = config.get('configuration');
         this.mysqlconf = config.get('mysql');
@@ -33,6 +35,7 @@ class TestServer {
 
         /*Sequelize Databse Synce*/
         this._syncSequelizeDatabase();
+
 
         /**Routes*/
         /* Common of All routes. */
@@ -134,12 +137,60 @@ class TestServer {
 
     _syncSequelizeDatabase() {
         const models = require("./models");
-        models.sequelize.sync().then(() => {
-            console.log('Nice Databse looks fine');
-        }).catch((err) => {
-            console.log(err, "Something went wrong with the Database update!")
-        })
+        models.sequelize.sync()
+            .then(() => {
+                console.log('Nice Databse looks fine');
+                /*Sequelize Create Empty user*/
+                this._sequelizeCreateFirstUser();
+                return null;
+            })
+            .catch((err) => {
+                console.log(err, "Something went wrong with the Database update!")
+            });
     }
+
+    _sequelizeCreateFirstUser() {
+        UsersModel.findAll(
+            {
+                raw: true,
+                attributes: ['id']
+            })
+            .then((rows) => {
+                if (rows.length > 0) {
+                    return false;
+                } else {
+                    const dftEmail = 'admin@gmail.com', dftPassword = '12345';
+                    const adminObj = {
+                        name: 'admin',
+                        username: 'admin',
+                        email: `${this._cryptService.encrypt((dftEmail).trim().toLowerCase())}`,
+                        password: this._cryptService.createPassword(dftPassword),
+                        age: 25,
+                        role: 'admin'
+                    };
+                    console.error(`=============================Default User Credentials===================================`);
+                    console.error(`Default user login ID : ${dftEmail}`);
+                    console.error(`Default user password : ${dftPassword}`);
+                    console.error(`=====================================END===========================================`);
+
+                    const superAdmin = new UsersModel(adminObj);
+                    return superAdmin.save((err) => {
+                        return true;
+                    });
+                }
+            })
+            .then((userData) => {
+                if (userData) {
+                    console.log('Default user created ');
+                } else {
+                    console.log('Default user already exits');
+                }
+            })
+            .catch(error => {
+                console.error('Error while creating default user');
+            })
+    }
+
 
     /******/
 }
