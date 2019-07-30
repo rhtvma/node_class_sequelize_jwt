@@ -9,6 +9,12 @@
 
 ### Public Access :  
     Images : http://localhost:3000/images/dummy-profile.jpg
+    
+        
+        =============================Default User Credentials===================================
+            
+             Login ID : admin@gmail.com
+             Password : 12345
 
     
 ### Config Information :

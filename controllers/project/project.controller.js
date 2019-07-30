@@ -4,7 +4,7 @@ const logg = new Services.LoggerService('Signup', true).logger,
     async = require('async');
 const Project = require('../../models').project;
 const Users = require('../../models').users;
-const UserProjectMapping = require('../../models').userprojectmapping;
+const Projectmapping = require('../../models').projectmapping;
 
 const _ = require('lodash');
 class ProjectController {
@@ -24,17 +24,17 @@ class ProjectController {
                     "count": body.profile.length
                 })
                 .save()
-                .then(projectResult => {
-                    console.log(projectResult.id);
+                .then(project => {
+                    console.log(project.id);
                     let userProjectMappingArr = [];
                     body.profile.reduce((val, index) => {
                         userProjectMappingArr.push({
-                            "projectId": projectResult.id,
+                            "projectId": project.id,
                             "userId": val
                         })
                     })
 
-                    UserProjectMapping.bulkCreate(userProjectMappingArr).then(usersRe => {
+                    Projectmapping.bulkCreate(userProjectMappingArr).then(usersRe => {
                         res.status(200).json({
                             status: 1,
                             message: "Success",
@@ -60,10 +60,10 @@ class ProjectController {
     }
 
     projectList(req, res, next) {
-        UserProjectMapping.belongsTo(Project, {targetKey: 'id', foreignKey: 'projectId'});
-        UserProjectMapping.belongsTo(Users, {targetKey: 'id', foreignKey: 'userId'});
+        Projectmapping.belongsTo(Project, {targetKey: 'id', foreignKey: 'projectId'});
+        Projectmapping.belongsTo(Users, {targetKey: 'id', foreignKey: 'userId'});
 
-        // return UserProjectMapping.findAll({
+        // return Projectmapping.findAll({
         //     include: [{
         //         model: Project
         //     }, {
@@ -80,7 +80,7 @@ class ProjectController {
 
 
         try {
-            return UserProjectMapping
+            return Projectmapping
                 .findAll({
                     include: [{
                         model: Project

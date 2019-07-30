@@ -1,7 +1,7 @@
 /* jshint indent: 1 */
 
 module.exports = function (sequelize, DataTypes) {
-    return sequelize.define('userprojectmapping', {
+    return sequelize.define('projectmapping', {
         id: {
             type: DataTypes.INTEGER(11),
             allowNull: true,
@@ -35,6 +35,6 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.DATE
         }
     }, {
-        tableName: 'userprojectmapping'
+        tableName: 'projectmapping'
     });
 };
