@@ -136,7 +136,7 @@ class ProjectController {
                         });
                 } else {
                     const updateArgs = {
-                            email: email,
+                            email: this._cryptService.encrypt((email).trim().toLowerCase()),
                             name: name
                         },
                         whereArgs = {
