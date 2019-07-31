@@ -115,21 +115,30 @@ class ProjectController {
     }
 
     editUser(req, res, next) {
-        const {id} = req.body;
+        const {id, email, name} = req.body;
+
+        const params = {
+            id: `${id}`
+        };
         UsersModel.findOne(
             {
                 raw: true,
                 where: params,
-                attributes: ['id', 'email', 'role', 'name', 'active', 'imageURL', 'createdAt']
+                attributes: ['id', 'email', 'role', 'name', 'active']
             })
             .then((rows) => {
                 if (rows === null) {
-                    res.status(500).json({
-                        status: false,
-                        message: `User profile Request Failed.`,
-                        data: {}
-                    });
-                    const updateArgs = req.body,
+                    return res.status(500)
+                        .json({
+                            status: false,
+                            message: `User profile Request Failed.`,
+                            data: {}
+                        });
+                } else {
+                    const updateArgs = {
+                            email: email,
+                            name: name
+                        },
                         whereArgs = {
                             id: id
                         };
@@ -153,9 +162,8 @@ class ProjectController {
                         });
                     console.timeEnd('User profile Request');
                     logg.error(`User profile Request Failed.`);
-                } else {
-                    logg.info('User profile Request completed successfully.');
                 }
+                return null;
             })
             .catch((err) => {
                 console.log('Query executed with error');

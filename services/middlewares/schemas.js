@@ -39,6 +39,7 @@ const signinSchema = Joi.object({
 });
 
 const editUserSchema = Joi.object().keys({
+    id: Joi.number().integer().greater(0).required(),
     name: name,
     email: email,
     role: Joi.string().valid('user', 'admin').uppercase(),
