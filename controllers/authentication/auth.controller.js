@@ -37,7 +37,7 @@ class AuthController {
                                 "name": name,
                                 "password": this._cryptService.createPassword(password),
                                 "email": this._cryptService.encrypt((email).trim().toLowerCase()),
-                                "imageURL": 'http://localhost:3000/images/dummy-profile.jpg',
+                                "imageURL": '/images/dummy-profile.jpg',
                             })
                             .save()
                             .then(result => {
